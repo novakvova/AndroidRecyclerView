@@ -102,9 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
                             try {
                                 String json = response.errorBody().string();
                                 Gson gson = new Gson();
-                                LoginBadRequest result = gson.fromJson(json, LoginBadRequest.class);
-                                emailLayout.setError(result.getEmail());
-                                passwordLayout.setError(result.getPassword());
+//                                LoginBadRequest result = gson.fromJson(json, LoginBadRequest.class);
+//                                emailLayout.setError(result.getEmail());
+//                                passwordLayout.setError(result.getPassword());
                             } catch (Exception ex) {
                                 email.setText(ex.getMessage());
                             }

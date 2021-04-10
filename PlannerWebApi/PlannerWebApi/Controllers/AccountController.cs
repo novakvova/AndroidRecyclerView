@@ -31,23 +31,6 @@ namespace PlannerWebApi.Controllers
             return await Mediator.Send(command);
         }
 
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile(IFormFile file)
-        {
-            // change file name with its extension
-            var fileName = Guid.NewGuid().ToString() +
-                System.IO.Path.GetExtension(file.FileName);
-
-
-            var path = Path.Combine(
-                          Directory.GetCurrentDirectory(), "uploads",
-                          fileName);
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            return Ok();
-        }
+        
     }
 }

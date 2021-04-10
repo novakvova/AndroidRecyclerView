@@ -48,26 +48,26 @@ public class ProfileActivity extends AppCompatActivity {
     private String token;
     private ImageRequester imageRequester;
     private NetworkImageView myImage;
-    SharedPreferences mSettings;
+    //SharedPreferences mSettings;
     private static int RESULT_LOAD_IMAGE = 1;
     private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mSettings = getSharedPreferences("planner_settings", Context.MODE_PRIVATE);
+//        mSettings = getSharedPreferences("planner_settings", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        if (mSettings.contains("token")) {
-            Log.d("token", mSettings.getString("token", ""));
-        }
-        token = getIntent().getStringExtra("token");
-
-        mSettings.edit().putString("token", token).apply();
+//        if (mSettings.contains("token")) {
+//            Log.d("token", mSettings.getString("token", ""));
+//        }
+//        token = getIntent().getStringExtra("token");
+//
+//        mSettings.edit().putString("token", token).apply();
 
         final TextView username = findViewById(R.id.UserName);
         AccountService.getInstance()
                 .getJSONApi()
-                .Profile("Bearer " + token)
+                .Profile()
                 .enqueue(new Callback<RegisterResultDTO>() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override

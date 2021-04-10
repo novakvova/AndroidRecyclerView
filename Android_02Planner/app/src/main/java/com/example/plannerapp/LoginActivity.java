@@ -10,12 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.plannerapp.application.HomeApplication;
 import com.example.plannerapp.constants.Urls;
 import com.example.plannerapp.dto.LoginBadRequest;
 import com.example.plannerapp.dto.LoginDTO;
 import com.example.plannerapp.dto.LoginResultDTO;
+import com.example.plannerapp.dto.LoginValidationDTO;
 import com.example.plannerapp.network.ImageRequester;
 import com.example.plannerapp.network.services.AccountService;
+import com.example.plannerapp.security.JwtSecurityService;
 import com.example.plannerapp.utils.CommonUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -89,16 +92,42 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<LoginResultDTO> call, Response<LoginResultDTO> response) {
                         CommonUtils.hideLoading();
+                        emailLayout.setError("");
+                        passwordLayout.setError("");
                         if (response.isSuccessful()) {
-                            Log.d("server", "Good");
-                            Log.d("Token:", response.body().getToken());
+                            JwtSecurityService jwtService = HomeApplication.getInstance();
+                            jwtService.saveJwtToken(response.body().getToken());
+
+                            Intent intent = new Intent(LoginActivity.this,
+                                    ProfileActivity.class);
+                            startActivity(intent);
+//                            Log.d("server", "Good");
+//                            Log.d("Token:", response.body().getToken());
                         } else {
                             try {
                                 String json = response.errorBody().string();
                                 Gson gson = new Gson();
-                                LoginBadRequest result = gson.fromJson(json, LoginBadRequest.class);
-                                emailLayout.setError(result.getEmail());
-                                passwordLayout.setError(result.getPassword());
+                                LoginValidationDTO result = gson.fromJson(json, LoginValidationDTO.class);
+                                String str="";
+                                if(result.getErrors().getEmail()!=null)
+                                {
+                                    for (String item: result.getErrors().getEmail()) {
+                                        str+=item+"\n";
+                                    }
+                                }
+                                emailLayout.setError(str);
+
+                                str="";
+                                if(result.getErrors().getPassword()!=null)
+                                {
+                                    for (String item: result.getErrors().getPassword()) {
+                                        str+=item+"\n";
+                                    }
+                                }
+                                passwordLayout.setError(str);
+
+//                                emailLayout.setError(result.getEmail());
+//                                passwordLayout.setError(result.getPassword());
                             } catch (Exception ex) {
                                 email.setText(ex.getMessage());
                             }

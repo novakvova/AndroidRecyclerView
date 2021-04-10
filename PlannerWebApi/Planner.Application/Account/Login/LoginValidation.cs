@@ -10,8 +10,11 @@ namespace Planner.Application.Account.Login
     {
         public LoginValidation()
         {
-            RuleFor(x => x.Email).NotEmpty().EmailAddress();
-            RuleFor(x => x.Password).NotEmpty().Password();
+            RuleFor(x => x.Email).NotEmpty()
+                .WithMessage("Не може бути пустим!")
+                .EmailAddress()
+                .WithMessage("Не коректна пошта");
+            RuleFor(x => x.Password).Password();
         }
     }
 }

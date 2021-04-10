@@ -22,11 +22,10 @@ public interface ApiAccount {
     @POST("/api/account/registration")
     public Call<RegisterResultDTO> Registration(@Body RegisterDTO registerDTO);
 
-    @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("/api/user/profile")
-    public Call<RegisterResultDTO> Profile(@Header("authorization") String token);
+    public Call<RegisterResultDTO> Profile();
 
     @Multipart
-    @POST("/api/account/upload")
+    @POST("/api/user/upload")
     public Call<String> UploadFile(@Part MultipartBody.Part file);
 }
