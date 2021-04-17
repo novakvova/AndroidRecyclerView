@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Planner.Application.Account;
+using Planner.Application.Users;
 using Planner.Domain;
 using Planner.EFData;
 using System;
@@ -57,5 +58,16 @@ namespace PlannerWebApi.Controllers
             }
             return Ok();
         }
+
+        [AllowAnonymous]
+        [HttpGet("users")]
+        public async Task<ActionResult<List<UserViewModel>>> UsersAsync()
+        {
+            UserListCommand userCommand = new UserListCommand
+            {
+            };
+            return await Mediator.Send(userCommand);
+        }
+
     }
 }
